@@ -71,3 +71,5 @@ export const requirePermission = (
     }
   };
 };
+
+export default requirePermission;

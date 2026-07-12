@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -108,16 +107,36 @@ model TwoFactor {
 }
 
 model Category {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String @unique
-  slug String @unique
+  id    String     @id @default(auto()) @map("_id") @db.ObjectId
+  name  String     @unique
+  slug  String     @unique
+  items menuItem[]
 }
 
 model activitiesLog {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
   action    String
   details   String?
-  createdAt DateTime @default(now())
+  createdAt DateTime   @default(now())
+  menuItems menuItem[]
+}
+
+model menuItem {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  description     Json?
+  price           Float
+  discount        Float?         @default(0)
+  image           String?
+  isAvailable     Boolean        @default(true)
+  recipe          String?
+  aiSuggestion    String?
+  categoryId      String
+  category        Category       @relation(fields: [categoryId], references: [id])
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  activitiesLog   activitiesLog? @relation(fields: [activitiesLogId], references: [id])
+  activitiesLogId String?        @db.ObjectId
 }

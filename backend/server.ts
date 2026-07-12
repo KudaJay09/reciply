@@ -13,6 +13,7 @@ import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./src/lib/auth";
 import categoryRouter from "./src/routes/category";
 import activitiesLogRouter from "./src/routes/activitiesLog";
+import menuItemRouter from "./src/routes/menu";
 
 dotenv.config();
 const app: Application = express();
@@ -48,6 +49,7 @@ if (process.env.NODE_ENV === "development") {
 // Routes
 app.use("/api/category", categoryRouter);
 app.use("/api/activities-log", activitiesLogRouter);
+app.use("/api/menu/", menuItemRouter);
 
 app.get("/", async (req: Request, res: Response) => {
   res.send("Hello from the backend!");
