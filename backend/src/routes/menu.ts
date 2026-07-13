@@ -1,5 +1,9 @@
 // import { submitFeedback } from "../controllers/feedback";
-import { createMenu, updateMenuItem } from "../controllers/menu";
+import {
+  createMenu,
+  getMenuItemById,
+  updateMenuItem,
+} from "../controllers/menu";
 import { checkRole } from "../middleware/checkRole";
 import express from "express";
 import { requirePermission } from "../middleware/requirePermission";
@@ -22,4 +26,7 @@ menuItemRouter.patch(
   requirePermission("update", "menu"),
   updateMenuItem,
 );
+
+menuItemRouter.get("/:id", requireAuth, getMenuItemById);
+
 export default menuItemRouter;
