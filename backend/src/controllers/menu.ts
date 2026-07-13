@@ -69,12 +69,6 @@ export const updateMenuItem = async (req: Request, res: Response) => {
       image,
     } = req.body;
 
-    if (!name || !price || !categoryId) {
-      return res
-        .status(400)
-        .json({ message: "Name, price and categoryId are required fields." });
-    }
-
     const updatedMenuItem = await prisma.menuItem.update({
       where: { id },
       data: {

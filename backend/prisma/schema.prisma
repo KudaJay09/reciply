@@ -166,7 +166,7 @@ enum TableStatus {
   AVAILABLE
   OCCUPIED
   RESERVED
-  // OUT_OF_SERVICE
+  OUT_OF_SERVICE
 }
 
 model Table {
@@ -178,5 +178,5 @@ model Table {
   status  TableStatus @default(AVAILABLE)
 
   // reservations Reservation[]
-  // orders       Order[] // 👈 NEW: Relation to orders
+  // orders       Order[]
 }
