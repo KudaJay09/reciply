@@ -175,6 +175,7 @@ export const getMenuItems = async (req: Request, res: Response) => {
           feedbacks: {
             select: {
               rating: true,
+              comment: true, // Might use disqus to handle comments, but for now, let's include it
             },
           },
         },

@@ -14,6 +14,7 @@ import { auth } from "./src/lib/auth";
 import categoryRouter from "./src/routes/category";
 import activitiesLogRouter from "./src/routes/activitiesLog";
 import menuItemRouter from "./src/routes/menu";
+import tableRouter from "./src/routes/table";
 
 dotenv.config();
 const app: Application = express();
@@ -50,6 +51,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/category", categoryRouter);
 app.use("/api/activities-log", activitiesLogRouter);
 app.use("/api/menu/", menuItemRouter);
+app.use("/api/tables/", tableRouter);
 
 app.get("/", async (req: Request, res: Response) => {
   res.send("Hello from the backend!");

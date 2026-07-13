@@ -155,3 +155,28 @@ model Feedback {
   user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
 }
+
+enum TableType {
+  square
+  circle
+  rectangle
+}
+
+enum TableStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  // OUT_OF_SERVICE
+}
+
+model Table {
+  id      String      @id @default(auto()) @map("_id") @db.ObjectId
+  name    String      @unique // e.g., "05", "06", "VIP 1"
+  seats   Int
+  section String      @default("Main Dining Room") // Main Dining Room, Outdoor, Terrace
+  shape   TableType   @default(square) // square, circle, rectangle
+  status  TableStatus @default(AVAILABLE)
+
+  // reservations Reservation[]
+  // orders       Order[] // 👈 NEW: Relation to orders
+}
