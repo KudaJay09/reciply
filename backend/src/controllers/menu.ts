@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import { type Request, type Response } from "express";
 import { prisma } from "../lib/prisma";
 import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "../lib/auth";
@@ -53,5 +53,55 @@ export const createMenu = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ error: "An error occurred while creating the menu." });
+  }
+};
+
+export const updateMenuItem = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params as { id: string };
+    const {
+      name,
+      description,
+      price,
+      categoryId,
+      isAvailable,
+      discount,
+      image,
+    } = req.body;
+
+    if (!name || !price || !categoryId) {
+      return res
+        .status(400)
+        .json({ message: "Name, price and categoryId are required fields." });
+    }
+
+    const updatedMenuItem = await prisma.menuItem.update({
+      where: { id },
+      data: {
+        name: name?.trim(),
+        description: description,
+        price,
+        categoryId,
+        isAvailable,
+        image,
+        discount,
+      },
+    });
+
+    await activitiesLog({
+      userId: (req as any).user?.id,
+      action: "UPDATE_MENU_ITEM",
+      details: `Menu item updated: ${updatedMenuItem.id}`,
+    });
+
+    res.status(200).json({
+      message: "Menu item updated successfully.",
+      data: updatedMenuItem,
+    });
+  } catch (error) {
+    console.error("Error updating menu:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the menu." });
   }
 };

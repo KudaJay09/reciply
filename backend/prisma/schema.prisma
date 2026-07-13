@@ -133,7 +133,7 @@ model menuItem {
   isAvailable     Boolean        @default(true)
   recipe          String?
   aiSuggestion    String?
-  categoryId      String
+  categoryId      String         @db.ObjectId
   category        Category       @relation(fields: [categoryId], references: [id])
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt

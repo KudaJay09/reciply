@@ -1,5 +1,5 @@
 // import { submitFeedback } from "../controllers/feedback";
-import { createMenu } from "../controllers/menu";
+import { createMenu, updateMenuItem } from "../controllers/menu";
 import { checkRole } from "../middleware/checkRole";
 import express from "express";
 import { requirePermission } from "../middleware/requirePermission";
@@ -15,4 +15,11 @@ menuItemRouter.post(
   createMenu,
 );
 
+menuItemRouter.patch(
+  "/update/:id",
+  requireAuth,
+  checkRole(["ADMIN", "MANAGER"]),
+  requirePermission("update", "menu"),
+  updateMenuItem,
+);
 export default menuItemRouter;
