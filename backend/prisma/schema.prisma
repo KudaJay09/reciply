@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -40,6 +41,7 @@ model User {
   accounts      Account[]
   twoFactors    TwoFactor[]
   activitiesLog activitiesLog[]
+  feedbacks     Feedback[]
 
   @@map("user")
 }
@@ -139,4 +141,17 @@ model menuItem {
   updatedAt       DateTime       @updatedAt
   activitiesLog   activitiesLog? @relation(fields: [activitiesLogId], references: [id])
   activitiesLogId String?        @db.ObjectId
+
+  feedbacks Feedback[]
+}
+
+model Feedback {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  rating     Int // 1 to 5 stars
+  comment    String?
+  menuItemId String   @db.ObjectId
+  menuItem   menuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
 }

@@ -150,3 +150,74 @@ export const deleteMenuItem = async (req: Request, res: Response) => {
       .json({ error: "An error occurred while deleting the menu item." });
   }
 };
+
+export const getMenuItems = async (req: Request, res: Response) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.max(1, parseInt(req.query.limit as string) || 10);
+    const skip = (page - 1) * limit;
+
+    const whereClause = {
+      isAvailable: session?.user?.role === "ADMIN" ? undefined : true,
+    };
+
+    const [rawMenuItems, totalItems] = await Promise.all([
+      prisma.menuItem.findMany({
+        skip: skip,
+        take: limit,
+        orderBy: { createdAt: "desc" }, // Order by creation date descending
+        where: whereClause,
+        include: {
+          feedbacks: {
+            select: {
+              rating: true,
+            },
+          },
+        },
+      }),
+      prisma.menuItem.count({
+        where: whereClause,
+      }),
+    ]);
+
+    //---- Add average rating and total reviews to each menu item ----//
+
+    const menuItemsWithRatings = rawMenuItems.map((item) => {
+      // Calculate average
+      const totalRatings = item.feedbacks.reduce((sum, f) => sum + f.rating, 0);
+      const averageRating =
+        item.feedbacks.length > 0 ? totalRatings / item.feedbacks.length : 0;
+
+      // Extract feedbacks out so we don't send useless arrays to the frontend
+      const { feedbacks, ...itemData } = item;
+
+      return {
+        ...itemData,
+        averageRating: Number(averageRating.toFixed(1)), // Rounds to 1 decimal place (e.g., 4.5)
+        totalReviews: item.feedbacks.length, // Bonus: Good for the UI to say "4.5 stars (12 reviews)"
+        feedbacks: item.feedbacks, // Include feedbacks in the response
+      };
+    });
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    res.status(200).json({
+      data: menuItemsWithRatings, // Sending the mapped data!
+      totalItems,
+      itemsPerPage: limit,
+      currentPage: page,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    });
+  } catch (error) {
+    console.error("Error fetching menu items:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the menu items." });
+  }
+};
