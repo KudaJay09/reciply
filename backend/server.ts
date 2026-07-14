@@ -15,6 +15,7 @@ import categoryRouter from "./src/routes/category";
 import activitiesLogRouter from "./src/routes/activitiesLog";
 import menuItemRouter from "./src/routes/menu";
 import tableRouter from "./src/routes/table";
+import reservationRouter from "./src/routes/reservation";
 
 dotenv.config();
 const app: Application = express();
@@ -52,6 +53,7 @@ app.use("/api/category", categoryRouter);
 app.use("/api/activities-log", activitiesLogRouter);
 app.use("/api/menu/", menuItemRouter);
 app.use("/api/tables/", tableRouter);
+app.use("/api/reservations/", reservationRouter);
 
 app.get("/", async (req: Request, res: Response) => {
   res.send("Hello from the backend!");

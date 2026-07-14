@@ -123,25 +123,26 @@ export const getAll = async (req: Request, res: Response) => {
     endOfDay.setHours(23, 59, 59, 999);
 
     const tables = await prisma.table.findMany({
-      //   include: {
-      //     //     // Include any active reservations for today to populate the sidebar
-      //     reservations: {
-      //       where: {
-      //         date: {
-      //           gte: startOfDay,
-      //           lte: endOfDay,
-      //         },
-      //         status: { in: ["PENDING", "CONFIRMED"] },
-      //       },
-      //       orderBy: { date: "asc" },
-      //     },
-      //     // Include active orders to know if a table is currently dining
-      //     orders: {
-      //       where: {
-      //         status: { notIn: ["SERVED", "CANCELLED"] },
-      //       },
-      //     },
-      //   },
+      include: {
+        //     //     // Include any active reservations for today to populate the sidebar
+        reservations: {
+          where: {
+            date: {
+              gte: startOfDay,
+              lte: endOfDay,
+            },
+            status: { in: ["PENDING", "CONFIRMED"] },
+          },
+          orderBy: { date: "asc" },
+        },
+
+        //     // Include active orders to know if a table is currently dining
+        //     orders: {
+        //       where: {
+        //         status: { notIn: ["SERVED", "CANCELLED"] },
+        //       },
+        //     },
+      },
       orderBy: { name: "asc" },
     });
 

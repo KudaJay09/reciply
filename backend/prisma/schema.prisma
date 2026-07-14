@@ -42,6 +42,7 @@ model User {
   twoFactors    TwoFactor[]
   activitiesLog activitiesLog[]
   feedbacks     Feedback[]
+  reservations  Reservation[]
 
   @@map("user")
 }
@@ -170,13 +171,31 @@ enum TableStatus {
 }
 
 model Table {
-  id      String      @id @default(auto()) @map("_id") @db.ObjectId
-  name    String      @unique // e.g., "05", "06", "VIP 1"
-  seats   Int
-  section String      @default("Main Dining Room") // Main Dining Room, Outdoor, Terrace
-  shape   TableType   @default(square) // square, circle, rectangle
-  status  TableStatus @default(AVAILABLE)
-
-  // reservations Reservation[]
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String        @unique // e.g., "05", "06", "VIP 1"
+  seats        Int
+  section      String        @default("Main Dining Room") // Main Dining Room, Outdoor, Terrace
+  shape        TableType     @default(square) // square, circle, rectangle
+  status       TableStatus   @default(AVAILABLE)
   // orders       Order[]
+  reservations Reservation[]
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Reservation {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  customerName String? // Useful if guest booking
+  userId       String?
+  user         User?         @relation(fields: [userId], references: [id])
+  tableId      String        @db.ObjectId
+  table        Table         @relation(fields: [tableId], references: [id])
+  date         DateTime
+  guests       Int
+  status       BookingStatus @default(PENDING)
 }

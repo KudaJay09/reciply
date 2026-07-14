@@ -9,6 +9,7 @@ const resources = [
   "menu",
   "order",
   "table",
+  "reservation",
   "kds",
   "report",
   "user",
