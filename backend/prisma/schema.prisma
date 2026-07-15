@@ -25,7 +25,6 @@ model User {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   twoFactorEnabled Boolean? @default(false)
-  username         String?  @unique
   displayUsername  String?
   role             Role     @default(CUSTOMER)
   status           String   @default("active")
