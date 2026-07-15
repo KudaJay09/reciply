@@ -1,23 +1,31 @@
-import { authClient } from "@/lib/auth-client"
-import { Outlet } from "react-router"
+import Wrapper from "@/components/auth/Wrapper";
+import { authClient } from "@/lib/auth-client";
+import { Outlet } from "react-router";
 
 const AuthLayout = () => {
+  const sessionState = authClient.useSession();
   const {
     data: session,
-    isPending,
-    error,
-    refetch,
-  } = authClient.useSession()
+    isPending, //loading state
+    error, //error object
+    refetch, //refetch the session
+  } = sessionState;
 
-  if (isPending) {
-    // return <Loader />
-  }
+  // if (isPending) {
+  //   return <Loader />
+  // }
 
   return (
-    <div>
-      <Outlet />
+    <div className="app__bg flex items-center justify-center min-h-screen">
+      <Wrapper>
+        <Outlet />
+      </Wrapper>
+      {/* {isPending && <p>Loading...</p>}
+      {error && <p>Error: {error.message}</p>}
+      {session && <p>Welcome, {session.user.name}!</p>}
+      {!session && <p>Please log in.</p>} */}
     </div>
-  )
-}
+  );
+};
 
-export default AuthLayout
+export default AuthLayout;
