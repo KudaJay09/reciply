@@ -1,6 +1,9 @@
 import AuthPage from "@/components/auth/AuthPage";
 import { images } from "@/constants";
 import type { Route } from "../+types/home";
+import Form from "@/components/auth/Form";
+import { useState } from "react";
+import { useLocation } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,6 +13,10 @@ export function meta({}: Route.MetaArgs) {
 }
 
 const SignIn = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const pathName = useLocation().pathname;
+  const isSignUp = pathName === "/register";
+
   return (
     <AuthPage
       badge="Private Access"
@@ -23,36 +30,7 @@ const SignIn = () => {
       switchLinkTo="/register"
       heroImage={images.welcome}
     >
-      <label className="auth__field" htmlFor="login-email">
-        <span className="auth__field-label">Email Address</span>
-        <input
-          className="auth__field-input"
-          id="login-email"
-          name="email"
-          type="email"
-          placeholder="Enter your email"
-          autoComplete="email"
-        />
-      </label>
-
-      <label className="auth__field" htmlFor="login-password">
-        <span className="auth__field-label">Password</span>
-        <input
-          className="auth__field-input"
-          id="login-password"
-          name="password"
-          type="password"
-          placeholder="Enter your password"
-          autoComplete="current-password"
-        />
-      </label>
-
-      <div className="auth__checkbox-row">
-        <input id="remember-me" name="rememberMe" type="checkbox" />
-        <label htmlFor="remember-me" className="auth__note">
-          Keep me signed in on this device
-        </label>
-      </div>
+      <Form isLoading={isLoading} setIsLoading={setIsLoading} />
     </AuthPage>
   );
 };
