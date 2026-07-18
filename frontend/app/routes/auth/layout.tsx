@@ -1,6 +1,8 @@
+import LoadingScreen from "@/components/Loader";
 import Wrapper from "@/components/auth/Wrapper";
 import { authClient } from "@/lib/auth-client";
-import { Outlet } from "react-router";
+import { Navigate, Outlet } from "react-router";
+import { toast } from "sonner";
 
 const AuthLayout = () => {
   const sessionState = authClient.useSession();
@@ -11,19 +13,24 @@ const AuthLayout = () => {
     refetch, //refetch the session
   } = sessionState;
 
-  // if (isPending) {
-  //   return <Loader />
-  // }
+  if (isPending) {
+    return <LoadingScreen />;
+  }
+
+  if (error) {
+    toast.error("Error fetching session. Please try again.");
+  }
+  const navigateTo = session?.user.role === "admin" ? "/admin" : "/";
+
+  if (session?.session) {
+    return <Navigate to={navigateTo} replace />;
+  }
 
   return (
     <div className="app__bg flex items-center justify-center min-h-screen">
       <Wrapper>
         <Outlet />
       </Wrapper>
-      {/* {isPending && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
-      {session && <p>Welcome, {session.user.name}!</p>}
-      {!session && <p>Please log in.</p>} */}
     </div>
   );
 };

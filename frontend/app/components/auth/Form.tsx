@@ -8,6 +8,7 @@ import { useState } from "react";
 import { ArrowRight, Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import type { SignUp } from "@/routes/auth/Sign-up";
 
 const Form = ({
   isLoading,
@@ -184,14 +185,21 @@ const Form = ({
           </Button>
         </div>
       )}
-      <Button
+      {isSignUp && (
+        <div className="auth__checkbox-row mt-4">
+          <input id="terms" name="terms" type="checkbox" />
+          <label htmlFor="terms" className="auth__note">
+            I agree to receive reservation updates and special offers.
+          </label>
+        </div>
+      )}
+      <button
         type="submit"
-        className="w-full py-6 gradient-primary text-white rounded-xl font-black text-sm hover:shadow-2xl hover:shadow-primary/30 transition-all mt-4 flex items-center justify-center gap-2 hover:-translate-y-1"
+        className="custom__button auth__submit"
         disabled={pending || isLoading}
       >
-        Sign In to Dashboard
-        <ArrowRight size={18} />
-      </Button>
+        {isSignUp ? "Create Account" : "Sign In"}
+      </button>
     </form>
   );
 };

@@ -66,13 +66,10 @@ const AuthPage = ({
       <h2 className="headtext__cormorant auth__form-title">{formTitle}</h2>
       <p className="p__opensans auth__form-description">{formDescription}</p>
 
-      <form className="auth__form" onSubmit={(event) => event.preventDefault()}>
+      <div className="auth__div">
         {children}
-        <button type="submit" className="custom__button auth__submit">
-          {submitLabel}
-        </button>
         <Socials isLoading={false} setIsLoading={() => {}} />
-      </form>
+      </div>
 
       <p className="p__opensans auth__switch">
         {switchText} <Link to={switchLinkTo}>{switchLinkLabel}</Link>

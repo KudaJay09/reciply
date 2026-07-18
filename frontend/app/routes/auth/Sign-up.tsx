@@ -1,6 +1,8 @@
 import AuthPage from "@/components/auth/AuthPage";
 import type { Route } from "../+types/home";
 import images from "@/constants/images";
+import Form from "@/components/auth/Form";
+import { useState } from "react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,7 +11,8 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-const SignUp = () => {
+export const SignUp = () => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <AuthPage
       badge="Join Our Table"
@@ -23,57 +26,7 @@ const SignUp = () => {
       switchLinkTo="/login"
       heroImage={images.sign}
     >
-      <label className="auth__field" htmlFor="register-name">
-        <span className="auth__field-label">Full Name</span>
-        <input
-          className="auth__field-input"
-          id="register-name"
-          name="name"
-          type="text"
-          placeholder="Enter your full name"
-          autoComplete="name"
-        />
-      </label>
-      <label className="auth__field" htmlFor="register-email">
-        <span className="auth__field-label">Email Address</span>
-        <input
-          className="auth__field-input"
-          id="register-email"
-          name="email"
-          type="email"
-          placeholder="Enter your email"
-          autoComplete="email"
-        />
-      </label>
-      <label className="auth__field" htmlFor="register-password">
-        <span className="auth__field-label">Password</span>
-        <input
-          className="auth__field-input"
-          id="register-password"
-          name="password"
-          type="password"
-          placeholder="Create a password"
-          autoComplete="new-password"
-        />
-      </label>
-      <label className="auth__field" htmlFor="register-confirm-password">
-        <span className="auth__field-label">Confirm Password</span>
-        <input
-          className="auth__field-input"
-          id="register-confirm-password"
-          name="confirmPassword"
-          type="password"
-          placeholder="Confirm your password"
-          autoComplete="new-password"
-        />
-      </label>
-      <div className="auth__checkbox-row">
-        <input id="terms" name="terms" type="checkbox" />
-        <label htmlFor="terms" className="auth__note">
-          I agree to receive reservation updates and special offers.
-        </label>
-      </div>
-      {/* <Socials isLoading={false} setIsLoading={() => {}} /> */}
+      <Form isLoading={isLoading} setIsLoading={setIsLoading} />
     </AuthPage>
   );
 };
