@@ -119,7 +119,7 @@ const Form = ({
   const pending = form.formState.isSubmitting || isLoading;
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
       {isSignUp && (
         <CustomInput
           control={form.control}

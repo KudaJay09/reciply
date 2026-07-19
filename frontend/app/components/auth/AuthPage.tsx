@@ -66,7 +66,7 @@ const AuthPage = ({
       <h2 className="headtext__cormorant auth__form-title">{formTitle}</h2>
       <p className="p__opensans auth__form-description">{formDescription}</p>
 
-      <div className="auth__div">
+      <div className="auth__div mt-10">
         {children}
         <Socials isLoading={false} setIsLoading={() => {}} />
       </div>

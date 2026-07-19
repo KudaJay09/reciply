@@ -20,7 +20,12 @@ const AuthLayout = () => {
   if (error) {
     toast.error("Error fetching session. Please try again.");
   }
-  const navigateTo = session?.user.role === "admin" ? "/admin" : "/";
+  const navigateTo =
+    session?.user.role === "ADMIN" || session?.user.role === "MANAGER"
+      ? "/admin/dashboard"
+      : session?.user.role === "STAFF" || session?.user.role === "KITCHEN"
+        ? "/pos/new-order"
+        : "/";
 
   if (session?.session) {
     return <Navigate to={navigateTo} replace />;

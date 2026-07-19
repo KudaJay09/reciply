@@ -56,7 +56,7 @@ export function CustomInput<T extends FieldValues>({
                 // Base Layout
                 "w-full  py-6 text-white ", // py-6 handles height better for this design
                 startIcon ? "pl-12" : "pl-4",
-                "pr-4 text-sm transition-all outline-none shadow-sm",
+                "pr-4 text-sm transition-all outline-none ",
 
                 // Error State
                 fieldState.invalid &&
