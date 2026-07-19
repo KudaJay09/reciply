@@ -11,6 +11,7 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/provider/theme-provider";
+import ToastProvider from "./components/provider/ToastProvider";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -39,6 +40,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </style>
       </head>
       <body>
+        <ToastProvider />
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>

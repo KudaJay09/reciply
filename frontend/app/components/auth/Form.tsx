@@ -1,14 +1,13 @@
+import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
 import * as z from "zod";
 import { CustomInput } from "../CustomInput";
 import { Button } from "../ui/button";
-import { useState } from "react";
-import { ArrowRight, Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
-import type { SignUp } from "@/routes/auth/Sign-up";
+import toast from "react-hot-toast";
 
 const Form = ({
   isLoading,

@@ -8,14 +8,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
 import { images } from "@/constants";
 import NavItem from "./NavItem";
 import { authClient } from "@/lib/auth-client";
 import type { roles } from "@/types";
 import { data, type NavItemType } from "./nav-data";
 import Theme from "@/components/Theme";
-import { UserIcon } from "lucide-react";
+import { LogOut, Settings, UserIcon } from "lucide-react";
+import toast from "react-hot-toast";
 
 const AppSidebar = () => {
   const { data: session } = authClient.useSession();
@@ -23,6 +24,17 @@ const AppSidebar = () => {
 
   const filterNav = (items: NavItemType[]) => {
     return items.filter((item) => item.allowedRoles.includes(userRole));
+  };
+
+  const logout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          <Navigate to="/register" replace />;
+          toast.success("Logged out successfully");
+        },
+      },
+    });
   };
   const filterPosNav = filterNav(data.posNav);
   const filterAdminNav = filterNav(data.adminNav);
@@ -76,6 +88,24 @@ const AppSidebar = () => {
                   </span>
                 </div>
               </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
+          <SidebarMenuItem>{/* Ass */}</SidebarMenuItem>
+
+          <SidebarMenuItem>
+            <SidebarMenuButton className="text-muted-foreground hover:text-foreground font-medium">
+              <Settings className="size-4" />
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={logout}
+              className="text-muted-foreground hover:text-red-500 font-medium transition-colors"
+            >
+              <LogOut className="size-4" />
+              <span>Log out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

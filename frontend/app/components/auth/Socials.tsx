@@ -1,6 +1,6 @@
 import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 import { Navigate } from "react-router";
-import { toast } from "sonner";
 
 type SocialsProps = {
   isLoading: boolean;
