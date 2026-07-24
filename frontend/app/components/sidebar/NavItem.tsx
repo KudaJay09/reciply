@@ -25,7 +25,7 @@ import { ChevronRight } from "lucide-react";
 const NavItem = ({ items, title }: { items: NavItemType[]; title: string }) => {
   const { pathname } = useLocation();
   const isActive = (url: string) => pathname === url;
-  console.log(items);
+  // console.log(items);
   return (
     <SidebarGroup>
       <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">

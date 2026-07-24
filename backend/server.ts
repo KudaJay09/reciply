@@ -11,11 +11,13 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./src/lib/auth";
+
 import categoryRouter from "./src/routes/category";
 import activitiesLogRouter from "./src/routes/activitiesLog";
 import menuItemRouter from "./src/routes/menu";
 import tableRouter from "./src/routes/table";
 import reservationRouter from "./src/routes/reservation";
+import { edgeStoreHandler } from "./src/lib/edgestore";
 
 dotenv.config();
 const app: Application = express();
@@ -65,6 +67,9 @@ app.get("/api/me", async (req, res) => {
   });
   return res.json(session);
 });
+
+app.get("/edgestore/*splat", edgeStoreHandler);
+app.post("/edgestore/*splat", edgeStoreHandler);
 
 app.use((err: Error, req: Request, res: Response) => {
   console.error(err.stack);

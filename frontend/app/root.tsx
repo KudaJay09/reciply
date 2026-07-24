@@ -7,11 +7,20 @@ import {
   ScrollRestoration,
 } from "react-router";
 
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+
 import type { Route } from "./+types/root";
 import "./app.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/provider/theme-provider";
-import ToastProvider from "./components/provider/ToastProvider";
+import ToastProvider from "@/components/provider/ToastProvider";
+import { EdgeStoreProvider } from "@/lib/useEdgestore";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -52,7 +61,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <EdgeStoreProvider basePath="http://localhost:3000/edgestore">
+        <Outlet />
+      </EdgeStoreProvider>
+    </QueryClientProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

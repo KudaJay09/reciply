@@ -15,5 +15,9 @@ export default [
 
   layout("routes/protected/layout.tsx", [
     route("/admin/dashboard", "routes/protected/admin/Dashboard.tsx"),
+    route(
+      "/admin/menu/items-categories/create",
+      "routes/protected/admin/Categories&CreateItems.tsx",
+    ),
   ]),
 ] satisfies RouteConfig;

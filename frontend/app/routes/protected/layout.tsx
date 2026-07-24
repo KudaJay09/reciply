@@ -61,9 +61,7 @@ const DashboardLayout = () => {
     >
       <AppSidebar />
       <SidebarInset className="bg-card/50">
-        <main className="my-4">
-          <Outlet />
-        </main>
+        <Outlet />
       </SidebarInset>
     </SidebarProvider>
   );
